@@ -1,0 +1,28 @@
+html {
+    background-color: gray;
+    font-family: Arial;
+}
+
+body {
+    background-color: white;
+    border-left: white solid 3em;
+    border-right: white solid 3em;
+    max-width: 1024px;
+    margin: auto;
+    border-top: white solid 2em;
+    border-bottom: white solid 2em;
+}
+
+p {
+    /*border-bottom: white solid 2em;*/
+    margin-bottom: 2em;
+    margin-top: 0;
+}
+
+section {
+    margin-bottom: 3em;
+}
+
+h1 {
+    margin-top: 0;
+}
