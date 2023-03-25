@@ -1,0 +1,33 @@
+###
+POST http://localhost:8080/order
+Content-Type: application/json
+
+{
+  "customerName": "Kacper",
+  "delivery": {
+    "courierName": "Bartek",
+    "status": "CREATED"
+  },
+  "items": [{
+    "quantity": 5,
+    "product": {
+      "name": "pizza",
+      "price": 500
+    }},
+    {
+    "quantity": 10,
+    "product": {
+      "name": "pizza",
+      "price": 500
+    }
+  }]
+}
+
+###
+PATCH http://localhost:8080/order/1
+Content-Type: application/json
+
+{
+  "status": "DELIVERED2"
+}
+

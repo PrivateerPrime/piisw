@@ -33,6 +33,14 @@ public class Order {
     public Order() {
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
     public List<OrderItem> getItems() {
         return items;
     }

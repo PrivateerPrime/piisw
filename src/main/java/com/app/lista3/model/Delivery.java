@@ -14,6 +14,7 @@ public class Delivery {
     private String courierName;
 
     @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
     private DeliveryStatus status;
 
     public Delivery(Long id, String courierName, DeliveryStatus status) {
@@ -23,6 +24,14 @@ public class Delivery {
     }
 
     public Delivery() {
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setCourierName(String courierName) {
+        this.courierName = courierName;
     }
 
     public Long getId() {

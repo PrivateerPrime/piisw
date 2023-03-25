@@ -26,6 +26,14 @@ public class OrderItem {
     public OrderItem() {
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
     public Product getProduct() {
         return product;
     }
