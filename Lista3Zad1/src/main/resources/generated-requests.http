@@ -28,6 +28,6 @@ PATCH http://localhost:8080/order/1
 Content-Type: application/json
 
 {
-  "status": "DELIVERED2"
+  "status": "DELIVERED"
 }
 

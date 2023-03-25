@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping(path = "/order")
 public class OrderController {
@@ -19,12 +21,16 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<Object> createOrder(@RequestBody Order order) {
-        orderService.createOrder(order);
-        return new ResponseEntity<>("Order created", HttpStatus.OK);
+        try {
+            orderService.createOrder(order);
+        } catch (IOException | InterruptedException e) {
+            new ResponseEntity<>("Order created in database without saving to history database", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>("Order created", HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Object> updateStatus(@RequestBody Delivery status, @PathVariable String id) {
+    public ResponseEntity<Object> updateDeliveryStatus(@RequestBody Delivery status, @PathVariable String id) {
         try {
             DeliveryStatus statusEnum = status.getStatus();
             orderService.updateStatus(statusEnum, id);
@@ -33,6 +39,8 @@ public class OrderController {
         }
         catch (NoSuchElement e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NO_CONTENT);
+        } catch (IOException | InterruptedException e) {
+            new ResponseEntity<>("Order updated in database without updating in history database", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>("Delivery status was updated successfully", HttpStatus.OK);
     }

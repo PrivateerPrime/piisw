@@ -13,6 +13,7 @@ import com.app.lista3zad1.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Optional;
 
@@ -31,7 +32,10 @@ public class OrderService {
     @Autowired
     private ProductRepository productRepository;
 
-    public void createOrder(Order order) {
+    @Autowired
+    private SaveToOrderHistoryService saveToOrderHistoryService;
+
+    public void createOrder(Order order) throws IOException, InterruptedException {
         deliveryRepository.save(order.getDelivery());
         for (OrderItem orderItem: order.getItems()) {
             Product product = orderItem.getProduct();
@@ -46,15 +50,17 @@ public class OrderService {
             orderItemRepository.save(orderItem);
         }
         orderRepository.save(order);
+        saveToOrderHistoryService.saveToOrderHistory(order);
     }
 
-    public void updateStatus(DeliveryStatus status, String id) throws NumberFormatException, NoSuchElement {
+    public void updateStatus(DeliveryStatus status, String id) throws NumberFormatException, NoSuchElement, IOException, InterruptedException {
         long idLong = Long.parseLong(id);
         Optional<Order> order = orderRepository.findById(idLong);
         if (order.isPresent()) {
             Delivery delivery = order.get().getDelivery();
             delivery.setStatus(status);
             deliveryRepository.save(delivery);
+            saveToOrderHistoryService.updateOrderHistory(delivery, idLong);
         } else {
             throw new NoSuchElement("No order in database matching this id: " + id);
         }
