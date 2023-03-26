@@ -37,7 +37,7 @@ public class OrderHistoryController {
     @PostMapping
     public ResponseEntity<Object> createOrderHistory(@RequestBody OrderDTO order) {
         orderHistoryService.createOrderHistory(order);
-        return new ResponseEntity<>("ok", HttpStatus.CREATED);
+        return new ResponseEntity<>("Order history created", HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}")
