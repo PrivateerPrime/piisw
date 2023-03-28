@@ -13,19 +13,20 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class OrderHistoryServiceTest {
+class OrderHistoryServiceTest {
 
     @MockBean
     private static OrderHistoryRepository orderHistoryRepository;
@@ -42,7 +43,7 @@ public class OrderHistoryServiceTest {
     public void setUp() {
         orderHistoryService = new OrderHistoryService(orderHistoryRepository);
 
-        when(orderHistoryRepository.findAll()).thenReturn(resultList);
+        when(orderHistoryRepository.findAll(PageRequest.of(0,5))).thenReturn(new PageImpl<>(resultList));
         when(orderHistoryRepository.findById(1L)).thenReturn(Optional.of(resultList.get(0)));
         when(orderHistoryRepository.findById(2L)).thenReturn(Optional.of(resultList.get(1)));
         when(orderHistoryRepository.findById(3L)).thenReturn(Optional.of(resultList.get(2)));
@@ -53,30 +54,30 @@ public class OrderHistoryServiceTest {
 
 
     @Test
-    public void testGetAll() {
-        List<OrderHistory> orders = orderHistoryService.getAll();
-        assertEquals(orders, resultList);
+    void testGetAll() {
+        List<OrderHistory> orders = orderHistoryService.getAll(PageRequest.of(0,5)).toList();
+        assertEquals(resultList, orders);
     }
 
     @Test
-    public void testGetById() {
+    void testGetById() {
         Optional<OrderHistory> order = orderHistoryService.getById("2");
-        assertEquals(order.get(), resultList.get(1));
+        assertEquals(resultList.get(1), order.get());
     }
 
     @Test
-    public void testGetByIdNoOrder() {
+    void testGetByIdNoOrder() {
         Optional<OrderHistory> order = orderHistoryService.getById("4");
         assertTrue(order.isEmpty());
     }
 
     @Test
-    public void testGetByIdWrongId() {
+    void testGetByIdWrongId() {
         assertThrows(NumberFormatException.class, () -> orderHistoryService.getById("asdmosak"));
     }
 
     @Test
-    public void createOrderHistoryTest() {
+    void createOrderHistoryTest() {
 
         OrderDTO orderDTO = new OrderDTO(100L, List.of(new OrderItem(5L, new Product(10L, "abc", new BigDecimal(100)), 20)), new Delivery(20L, "KURIER", DeliveryStatus.PICKED_UP), "KLIENT10");
         OrderHistory orderHistory = orderHistoryService.createOrderHistory(orderDTO);
@@ -90,7 +91,7 @@ public class OrderHistoryServiceTest {
     }
 
     @Test
-    public void updateOrderHistoryStatusTest() throws NoSuchElement {
+    void updateOrderHistoryStatusTest() throws NoSuchElement {
 
         DeliveryStatus status = DeliveryStatus.DELIVERED;
         String id = "3";
@@ -103,7 +104,7 @@ public class OrderHistoryServiceTest {
     }
 
     @Test
-    public void updateOrderHistoryStatusWrongIdTest() {
+    void updateOrderHistoryStatusWrongIdTest() {
 
         DeliveryStatus status = DeliveryStatus.DELIVERED;
         String id = "5";

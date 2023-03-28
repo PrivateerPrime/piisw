@@ -10,6 +10,7 @@ import com.app.lista3zad1.repository.DeliveryRepository;
 import com.app.lista3zad1.repository.OrderItemRepository;
 import com.app.lista3zad1.repository.OrderRepository;
 import com.app.lista3zad1.repository.ProductRepository;
+import org.openapitools.client.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class OrderService {
     @Autowired
     private SaveToOrderHistoryService saveToOrderHistoryService;
 
-    public void createOrder(Order order) throws IOException, InterruptedException {
+    public void createOrder(Order order) throws IOException, ApiException {
         deliveryRepository.save(order.getDelivery());
         for (OrderItem orderItem: order.getItems()) {
             Product product = orderItem.getProduct();
@@ -53,14 +54,14 @@ public class OrderService {
         saveToOrderHistoryService.saveToOrderHistory(order);
     }
 
-    public void updateStatus(DeliveryStatus status, String id) throws NumberFormatException, NoSuchElement, IOException, InterruptedException {
+    public void updateStatus(DeliveryStatus status, String id) throws NumberFormatException, NoSuchElement, IOException, ApiException {
         long idLong = Long.parseLong(id);
         Optional<Order> order = orderRepository.findById(idLong);
         if (order.isPresent()) {
             Delivery delivery = order.get().getDelivery();
             delivery.setStatus(status);
             deliveryRepository.save(delivery);
-            saveToOrderHistoryService.updateOrderHistory(delivery, idLong);
+            saveToOrderHistoryService.updateOrderHistory(delivery, id);
         } else {
             throw new NoSuchElement("No order in database matching this id: " + id);
         }

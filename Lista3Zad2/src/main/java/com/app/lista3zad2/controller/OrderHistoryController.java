@@ -7,11 +7,12 @@ import com.app.lista3zad2.model.OrderDTO;
 import com.app.lista3zad2.model.OrderHistory;
 import com.app.lista3zad2.service.OrderHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,8 +23,8 @@ public class OrderHistoryController {
     private OrderHistoryService orderHistoryService;
 
     @GetMapping
-    public ResponseEntity<List<OrderHistory>> getOrderHistory() {
-        return new ResponseEntity<>(orderHistoryService.getAll(), HttpStatus.OK);
+    public ResponseEntity<Page<OrderHistory>> getOrderHistory(Pageable pageable) {
+        return new ResponseEntity<>(orderHistoryService.getAll(pageable), HttpStatus.OK);
     }
     @SuppressWarnings("OptionalIsPresent")
     @GetMapping("/{id}")

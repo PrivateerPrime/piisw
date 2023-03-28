@@ -5,6 +5,7 @@ import com.app.lista3zad1.exceptions.NoSuchElement;
 import com.app.lista3zad1.model.Delivery;
 import com.app.lista3zad1.model.Order;
 import com.app.lista3zad1.service.OrderService;
+import org.openapitools.client.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class OrderController {
     public ResponseEntity<Object> createOrder(@RequestBody Order order) {
         try {
             orderService.createOrder(order);
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException | ApiException e) {
             new ResponseEntity<>("Order created in database without saving to history database", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>("Order created", HttpStatus.CREATED);
@@ -39,7 +40,7 @@ public class OrderController {
         }
         catch (NoSuchElement e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NO_CONTENT);
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException | ApiException e) {
             new ResponseEntity<>("Order updated in database without updating in history database", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>("Delivery status was updated successfully", HttpStatus.OK);

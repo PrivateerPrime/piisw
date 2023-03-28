@@ -6,12 +6,14 @@ import com.app.lista3zad2.model.OrderDTO;
 import com.app.lista3zad2.model.OrderHistory;
 import com.app.lista3zad2.repository.OrderHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 @Service
 public class OrderHistoryService {
@@ -23,8 +25,8 @@ public class OrderHistoryService {
         this.orderHistoryRepository = orderHistoryRepository;
     }
 
-    public List<OrderHistory> getAll() {
-        return orderHistoryRepository.findAll();
+    public Page<OrderHistory> getAll(Pageable pageable) {
+        return orderHistoryRepository.findAll(pageable);
     }
 
     public Optional<OrderHistory> getById(String id) throws NumberFormatException{

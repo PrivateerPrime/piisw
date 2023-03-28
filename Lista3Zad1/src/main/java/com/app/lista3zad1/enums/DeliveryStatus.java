@@ -5,7 +5,7 @@ public enum DeliveryStatus {
     PICKED_UP("PICKED_UP"),
     DELIVERED("DELIVERED");
 
-    private String status;
+    private final String status;
 
     DeliveryStatus(String status) {
         this.status = status;
@@ -14,11 +14,6 @@ public enum DeliveryStatus {
     public String getStatus() {
         return status;
     }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     @Override
     public String toString() {
         return getStatus();

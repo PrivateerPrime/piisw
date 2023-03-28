@@ -3,21 +3,21 @@ POST http://localhost:8080/order
 Content-Type: application/json
 
 {
-  "customerName": "Kacper",
+  "customerName": "Kacper1",
   "delivery": {
-    "courierName": "Bartek",
+    "courierName": "Bartek1",
     "status": "CREATED"
   },
   "items": [{
     "quantity": 5,
     "product": {
-      "name": "pizza",
+      "name": "pizza1",
       "price": 500
     }},
     {
     "quantity": 10,
     "product": {
-      "name": "pizza",
+      "name": "pizza1",
       "price": 500
     }
   }]
@@ -30,4 +30,10 @@ Content-Type: application/json
 {
   "status": "DELIVERED"
 }
+
+###
+GET http://localhost:8090/order-history?page=0&size=3
+Accept: application/json
+
+
 
