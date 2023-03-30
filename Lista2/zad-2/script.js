@@ -6,7 +6,6 @@
     const forms = document.querySelectorAll('.needs-validation');
 
     // Loop over them and prevent submission
-    let isInvalid;
     Array.prototype.slice.call(forms).forEach((form) => {
         form.addEventListener('submit', (event) => {
             if (!form.checkValidity()) {
@@ -36,7 +35,7 @@ function submitForm() {
         const width = widthInput.value;
         const height = heightInput.value;
         const depth = depthInput.value;
-        let volume = parseInt((width * height * depth / 1000000).toFixed(2));
+        let volume = parseFloat((width * height * depth / 1000000).toFixed(2));
         const table = document.getElementById("table");
         let row = table.insertRow(1);
         let cell1 = row.insertCell();
@@ -51,7 +50,7 @@ function submitForm() {
         cell5.innerText = volume;
 
         let footer = document.getElementById("volumeFooter");
-        let footerValue = parseInt(footer.innerText);
+        let footerValue = parseFloat(footer.innerText);
         console.log(footerValue);
         footer.innerText = footerValue + volume;
         document.getElementById('form');
