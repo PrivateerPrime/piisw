@@ -1,22 +1,21 @@
 package com.capgemini.jpa.entities;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
+import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
+@SQLDelete(sql = "UPDATE server SET deleted=true WHERE id=?")
+@Where(clause = "deleted=false or deleted is null")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class Server {
 
     @Id
@@ -30,25 +29,23 @@ public class Server {
     @Column(nullable = false)
     private String ip;
 
+    @Transient
+    private LocalDateTime createdDate = LocalDateTime.now();
+
+    @Column
+    @UpdateTimestamp
+    private LocalDateTime lastUpdateDate;
+
+    @Column
+    private Boolean deleted = false;
+
+    @Version
+    @Column
+    private Long version;
+
     public Server(String name, String ip) {
         super();
         this.name = name;
         this.ip = ip;
     }
-
-    public Long getVersion(){
-        //todo: uncomment it
-        return null;
-    }
-
-    public LocalDateTime getCreatedDate(){
-        //todo: uncomment it
-        return null;
-    }
-
-    public LocalDateTime getLastUpdateDate(){
-        //todo: uncomment it
-        return null;
-    }
-
 }

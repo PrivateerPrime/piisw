@@ -11,6 +11,7 @@ import org.springframework.test.context.transaction.TestTransaction;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -78,6 +79,6 @@ class Task1 {
         TestTransaction.end();
 
         // then
-        assertThrows( EntityNotFoundException.class, () -> serverRepository.getById(server.getId()));
+        assertThrows(EntityNotFoundException.class, () -> serverRepository.findById(server.getId()).orElseThrow(EntityNotFoundException::new));
     }
 }

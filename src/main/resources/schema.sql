@@ -40,6 +40,7 @@ create table server
     last_update_date timestamp,
     name             varchar(255) not null,
     version          bigint,
+    deleted          boolean,
     primary key (id)
 );
 create table sql_event
