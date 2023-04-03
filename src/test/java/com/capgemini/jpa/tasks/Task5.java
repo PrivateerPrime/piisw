@@ -1,5 +1,6 @@
 package com.capgemini.jpa.tasks;
 
+import com.capgemini.jpa.configuration.AuditingConfiguration;
 import com.capgemini.jpa.entities.Server;
 import com.capgemini.jpa.repositories.ServerRepository;
 import com.capgemini.jpa.services.ServerService;
@@ -8,20 +9,24 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 
 
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.when;
 
 @DataJpaTest
+@Import(AuditingConfiguration.class)
 class Task5 {
 
     @Autowired
     private ServerService serverService;
 
-    @Autowired // TODO: configure as mockrepository
+    @MockBean
     private ServerRepository serverRepositoryMock;
 
     @Test
@@ -43,7 +48,7 @@ class Task5 {
     }
 
     private void whenSerachingForNameReturn(String serverName, Server dummyServer) {
-        // TODO: add your mock definition here
+        when(serverRepositoryMock.findByName(serverName)).thenReturn(Optional.ofNullable(dummyServer));
     }
 
     @TestConfiguration
