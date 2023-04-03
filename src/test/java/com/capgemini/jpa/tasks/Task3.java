@@ -1,25 +1,32 @@
 package com.capgemini.jpa.tasks;
 
+import com.capgemini.jpa.configuration.AuditingConfiguration;
 import com.capgemini.jpa.entities.Event;
 import com.capgemini.jpa.entities.RequestEvent;
+import com.capgemini.jpa.entities.SqlEvent;
+import com.capgemini.jpa.repositories.EventRepository;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import javax.persistence.EntityManager;
-
 import java.time.LocalDateTime;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
 @DataJpaTest
+@Import(AuditingConfiguration.class)
 class Task3 {
 
     @Autowired
     EntityManager entityManager;
+
+    @Autowired
+    EventRepository eventRepository;
 
     @Test
     void shouldDeleteInBulkEventsOlderThan() throws Exception {
@@ -27,9 +34,10 @@ class Task3 {
         LocalDateTime givenDate = LocalDateTime.of(2017, 12, 31, 0, 0);
 
         // when
-        //repository.deleteInBulkBeforDate(givenDate); // replace with repository method call
+        eventRepository.deleteByTimeLessThan(givenDate); // replace with repository method call
 
         // then
+        SqlEvent sqlEvent = new SqlEvent();
         assertThat(new SimpleJpaRepository<Event, Long>(Event.class, entityManager).findAll(), hasSize(32));
     }
 
@@ -40,13 +48,13 @@ class Task3 {
         Class<RequestEvent> clazz = RequestEvent.class;
 
         // when
-//		repository.updateInBulkToBeAnalyzedByType(clazz, threshold);
+        eventRepository.updateAnalysisRequiredByDurationGreaterThan(threshold, clazz);
 
         // then
         assertThat(new SimpleJpaRepository<Event, Long>(Event.class, entityManager).findAll().stream()//
                 .filter(e -> e.getDuration() > threshold)//
                 .filter(Event::isAnalysisRequired)//
-                .count(), CoreMatchers.is(3));
+                .count(), CoreMatchers.is(3L));
     }
 
 }
