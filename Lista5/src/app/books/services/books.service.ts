@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Book } from '../model/book';
+import { Review } from '../model/review';
 
 const booksApiPrefix = '/api/books';
 
@@ -21,5 +22,9 @@ export class BooksService {
 
   updateBookById(id: number, book: Book): Observable<Book> {
     return this.http.put<Book>(`${booksApiPrefix}/${id}`, book);
+  }
+
+  getReviewsByBookId(id: number) {
+    return this.http.get<Review[]>(`/api/reviews?forBook=${id}`);
   }
 }

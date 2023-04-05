@@ -2,9 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BookListComponent } from './books/components/book-list/book-list.component';
 import { BookListResolver } from './books/resolvers/book-list.resolver';
-import { BookReviewsComponent } from './books/components/book-reviews/book-reviews.component';
+import { BookDetailsComponent } from './books/components/book-details/book-details.component';
 import { BookIdResolver } from './books/resolvers/book-id.resolver';
 import { BookEditComponent } from './books/components/book-edit/book-edit.component';
+import { BookReviewsResolver } from './books/resolvers/book-reviews.resolver';
 
 const routes: Routes = [
   {
@@ -21,9 +22,10 @@ const routes: Routes = [
   },
   {
     path: 'books/:bookId/reviews',
-    component: BookReviewsComponent,
+    component: BookDetailsComponent,
     resolve: {
       book: BookIdResolver,
+      reviews: BookReviewsResolver,
     },
   },
   {
