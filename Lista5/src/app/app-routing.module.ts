@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { BookListComponent } from './books/components/book-list/book-list.component';
 import { BookListResolver } from './books/resolvers/book-list.resolver';
 import { BookReviewsComponent } from './books/components/book-reviews/book-reviews.component';
+import { BookIdResolver } from './books/resolvers/book-id.resolver';
+import { BookEditComponent } from './books/components/book-edit/book-edit.component';
 
 const routes: Routes = [
   {
@@ -17,7 +19,20 @@ const routes: Routes = [
       books: BookListResolver,
     },
   },
-  { path: 'books/:bookId/reviews', component: BookReviewsComponent },
+  {
+    path: 'books/:bookId/reviews',
+    component: BookReviewsComponent,
+    resolve: {
+      book: BookIdResolver,
+    },
+  },
+  {
+    path: 'books/:bookId/edit',
+    component: BookEditComponent,
+    resolve: {
+      book: BookIdResolver,
+    },
+  },
 ];
 
 @NgModule({
