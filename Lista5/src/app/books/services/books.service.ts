@@ -6,17 +6,16 @@ import { Book } from '../model/book';
 const booksApiPrefix = '/api/books';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BooksService {
-
-  constructor(private readonly http: HttpClient) { }
+  constructor(private readonly http: HttpClient) {}
 
   getAllBooks(): Observable<Book[]> {
     return this.http.get<Book[]>(booksApiPrefix);
   }
 
   getBookById(id: number): Observable<Book> {
-    return this.http.get<Book>(`${booksApiPrefix}/${id}`)
+    return this.http.get<Book>(`${booksApiPrefix}/${id}`);
   }
 }
