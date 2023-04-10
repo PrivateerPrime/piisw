@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BookListComponent } from './book-list.component';
-import {ActivatedRoute} from "@angular/router";
+import { ActivatedRoute } from '@angular/router';
 
 describe('BookListComponent', () => {
   let component: BookListComponent;
@@ -12,20 +12,17 @@ describe('BookListComponent', () => {
     activatedRouteMock = {
       snapshot: {
         data: {
-          books: []
-        }
-      }
+          books: [],
+        },
+      },
     };
   });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BookListComponent ],
-      providers: [
-        { provide: ActivatedRoute, useValue: activatedRouteMock }
-      ]
-    })
-    .compileComponents();
+      declarations: [BookListComponent],
+      providers: [{ provide: ActivatedRoute, useValue: activatedRouteMock }],
+    }).compileComponents();
   });
 
   beforeEach(() => {
