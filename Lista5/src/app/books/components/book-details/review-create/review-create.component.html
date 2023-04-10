@@ -1,0 +1,25 @@
+<form [formGroup]="formReview" (ngSubmit)="onSubmit()">
+  <div class="mb-3">
+    <label for="title" class="form-label">Title *</label>
+    <input [ngClass]="{'border-danger': formReview.controls['title'].errors != null && formReview.controls['title'].dirty}"
+           [formControlName]="'title'" type="text" class="form-control" id="title">
+    <div *ngIf="formReview.controls['title'].errors != null && formReview.controls['title'].dirty" id="titleHelp" class="form-text text-danger">
+      Title is obligatory</div>
+  </div>
+  <div class="mb-3">
+    <label for="description" class="form-label">Description *</label>
+    <textarea [ngClass]="{'border-danger': formReview.controls['description'].errors != null && formReview.controls['description'].dirty}" rows="3"
+              [formControlName]="'description'" type="text" class="form-control" id="description">
+    </textarea>
+    <div *ngIf="formReview.controls['description'].errors != null && formReview.controls['description'].dirty"
+         id="descriptionHelp" class="form-text text-danger">Description is obligatory</div>
+  </div>
+  <div class="mb-3">
+    <label for="rate" class="form-label">Rate *</label>
+    <input min="1" max="5" [ngClass]="{'border-danger': formReview.controls['rate'].errors != null && formReview.controls['rate'].dirty}"
+           [formControlName]="'rate'" type="number" class="form-control" id="rate">
+    <div *ngIf="formReview.controls['rate'].errors != null && formReview.controls['rate'].dirty" id="rateHelp" class="form-text text-danger">
+      Rate is obligatory and should be in range between 1 and 5</div>
+  </div>
+  <button [disabled]="formReview.invalid || formReview.pristine" type="submit" class="btn btn-primary">Save</button>
+</form>

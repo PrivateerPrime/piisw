@@ -6,10 +6,17 @@ import { RouterModule } from '@angular/router';
 import { BookDetailsComponent } from './components/book-details/book-details.component';
 import { BookEditComponent } from './components/book-edit/book-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BookReviewsComponent } from './components/book-details/book-reviews/book-reviews.component';
+import { ReviewListComponent } from './components/book-details/review-list/review-list.component';
+import { ReviewCreateComponent } from './components/book-details/review-create/review-create.component';
 
 @NgModule({
-  declarations: [BookListComponent, BookDetailsComponent, BookEditComponent, BookReviewsComponent],
+  declarations: [
+    BookListComponent,
+    BookDetailsComponent,
+    BookEditComponent,
+    ReviewListComponent,
+    ReviewCreateComponent,
+  ],
   imports: [
     CommonModule,
     HttpClientModule,

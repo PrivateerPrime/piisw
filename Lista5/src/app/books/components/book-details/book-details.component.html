@@ -8,11 +8,13 @@
       </tr>
     </tbody>
   </table>
-  <h3>Reviews</h3>
-  <div *ngFor="let review of reviews">
-    <bs-book-reviews [review]="review"></bs-book-reviews>
-  </div>
   <a [routerLink]="['/books']">
     <button type="button" class="btn btn-primary">Close</button>
   </a>
+  <h3>Reviews</h3>
+  <div *ngFor="let review of reviews">
+    <bs-review-list [review]="review"></bs-review-list>
+  </div>
+  <h3>Create new Review</h3>
+  <bs-review-create [bookId]="book!.id"></bs-review-create>
 </div>

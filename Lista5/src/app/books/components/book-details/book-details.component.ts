@@ -9,7 +9,7 @@ import { Review } from '../../model/review';
   styleUrls: ['./book-details.component.scss'],
 })
 export class BookDetailsComponent implements OnInit {
-  book: Book[] | undefined;
+  book: Book | undefined;
   reviews: Review[] | undefined;
 
   constructor(private readonly activatedRoute: ActivatedRoute) {}

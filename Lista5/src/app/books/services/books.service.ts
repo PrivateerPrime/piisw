@@ -5,6 +5,7 @@ import { Book } from '../model/book';
 import { Review } from '../model/review';
 
 const booksApiPrefix = '/api/books';
+const reviewsApiPrefix = '/api/reviews';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +26,14 @@ export class BooksService {
   }
 
   getReviewsByBookId(id: number) {
-    return this.http.get<Review[]>(`/api/reviews?forBook=${id}`);
+    return this.http.get<Review[]>(`${reviewsApiPrefix}?forBook=${id}`);
+  }
+
+  createReviewForBook(review: Review) {
+    return this.http.post<Review>(reviewsApiPrefix, review);
+  }
+
+  getBooksByName(name: string) {
+    return this.http.get<Book[]>(`${booksApiPrefix}?q=${name}`);
   }
 }
