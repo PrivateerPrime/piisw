@@ -1,8 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Book } from '../../model/book';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
 import { BooksService } from '../../services/books.service';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  iif,
+  Subject,
+  switchMap,
+} from 'rxjs';
 
 @Component({
   selector: 'bs-book-list',
@@ -10,24 +16,35 @@ import { BooksService } from '../../services/books.service';
   styleUrls: ['./book-list.component.scss'],
 })
 export class BookListComponent implements OnInit {
-  @ViewChild('bookSearch')
-  searchBar!: HTMLInputElement;
-  readonly books: Book[];
-  private $observeBooks: Observable<Book[]> | undefined;
+  searchTerms = new Subject<string>();
+  books: Book[] | undefined;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly bookService: BooksService
-  ) {
-    this.books = this.activatedRoute.snapshot.data['books'];
-  }
+  ) {}
 
   ngOnInit(): void {
-    // this.searchBar;
-    this.$observeBooks = this.bookService.getBooksByName('Lem');
+    this.books = this.activatedRoute.snapshot.data['books'];
+
+    this.searchTerms
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged(),
+        switchMap((value) =>
+          iif(
+            () => value.length > 1,
+            this.bookService.getBooksByName(value),
+            this.bookService.getAllBooks()
+          )
+        )
+      )
+      .subscribe((response) => {
+        this.books = response;
+      });
   }
 
   onValueChanges(searchText: string) {
-    // console.log($event);
+    this.searchTerms.next(searchText);
   }
 }
